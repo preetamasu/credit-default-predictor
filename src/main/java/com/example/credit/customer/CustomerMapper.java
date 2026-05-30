@@ -1,5 +1,8 @@
 package com.example.credit.customer;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class CustomerMapper {
 
     public CustomerResponseDTO toResponse(Customer customer){
