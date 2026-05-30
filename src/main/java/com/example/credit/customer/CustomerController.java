@@ -1,5 +1,6 @@
 package com.example.credit.customer;
 
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,7 @@ public class CustomerController {
     }
 
     @PostMapping
-    public ResponseEntity<CustomerResponseDTO> createCustomer(@RequestBody
+    public ResponseEntity<CustomerResponseDTO> createCustomer(@Valid @RequestBody
                                                               CustomerRequestDTO customerRequestDTO){
         return new ResponseEntity<>(customerService.createCustomer(customerRequestDTO), HttpStatus.CREATED);
     }
@@ -32,12 +33,12 @@ public class CustomerController {
     }
 
     @PutMapping("/{customerId}")
-    public ResponseEntity<CustomerResponseDTO> updateCustomer(@RequestBody CustomerRequestDTO customerRequestDTO,@PathVariable UUID customerId){
+    public ResponseEntity<CustomerResponseDTO> updateCustomer(@Valid @RequestBody CustomerRequestDTO customerRequestDTO,@PathVariable UUID customerId){
         return new ResponseEntity<>(customerService.updateCustomer(customerId,customerRequestDTO),HttpStatus.OK);
     }
 
     @DeleteMapping("/{customerId}")
     public ResponseEntity<String> deleteCustomer(@PathVariable UUID customerId){
-        return new ResponseEntity<>("Customer successfully deleted",HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>("Customer successfully deleted",HttpStatus.OK);
     }
 }
