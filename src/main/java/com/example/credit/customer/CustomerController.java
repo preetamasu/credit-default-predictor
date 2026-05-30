@@ -30,4 +30,14 @@ public class CustomerController {
     public ResponseEntity<List<CustomerResponseDTO>> getAllCustomers(){
      return new ResponseEntity<>(customerService.getAllCustomers(),HttpStatus.OK);
     }
+
+    @PutMapping("/{customerId}")
+    public ResponseEntity<CustomerResponseDTO> updateCustomer(@RequestBody CustomerRequestDTO customerRequestDTO,@PathVariable UUID customerId){
+        return new ResponseEntity<>(customerService.updateCustomer(customerId,customerRequestDTO),HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{customerId}")
+    public ResponseEntity<String> deleteCustomer(@PathVariable UUID customerId){
+        return new ResponseEntity<>("Customer successfully deleted",HttpStatus.NO_CONTENT);
+    }
 }
