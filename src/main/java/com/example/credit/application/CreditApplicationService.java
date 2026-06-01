@@ -37,7 +37,7 @@ public class CreditApplicationService {
 
         creditApplication.setCustomer(customer);
 
-        CreditApplicationResponseDTO savedApplication = creditApplicationMapper.toResponse(creditApplication);
-        return savedApplication;
+         return creditApplicationMapper.toResponse(creditApplication);
+
     }
 }
