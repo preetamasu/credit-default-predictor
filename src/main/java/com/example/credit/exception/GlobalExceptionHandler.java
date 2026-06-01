@@ -48,4 +48,16 @@ public class GlobalExceptionHandler {
         ),HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(CustomerNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleCustomerNotFound(CustomerNotFoundException exception,HttpServletRequest request){
+        return new ResponseEntity<>(new ErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                HttpStatus.BAD_REQUEST.getReasonPhrase(),
+                exception.getMessage(),
+                request.getRequestURI(),
+                null
+
+        ),HttpStatus.NOT_FOUND);
+    }
 }

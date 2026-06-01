@@ -1,5 +1,7 @@
 package com.example.credit.customer;
 
+import com.example.credit.exception.CustomerNotFoundException;
+import com.example.credit.exception.DuplicateEmailException;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
@@ -19,6 +21,12 @@ public class CustomerService {
 
 
     public CustomerResponseDTO createCustomer(CustomerRequestDTO requestDTO){
+
+        if(customerRepository.existsByEmail(requestDTO.email())){
+            throw new DuplicateEmailException("Customer exits with this email" + requestDTO.email());
+
+        }
+
         Customer customer = new Customer();
         customer.setFirstName(requestDTO.firstName());
         customer.setLastName(requestDTO.lastName());
@@ -31,7 +39,7 @@ public class CustomerService {
     }
 
     public CustomerResponseDTO getCustomerById(UUID id){
-        Customer customer = customerRepository.findById(id).orElseThrow( ()-> new RuntimeException("Customer not found with id: " + id));
+        Customer customer = customerRepository.findById(id).orElseThrow( ()-> new CustomerNotFoundException("Customer not found with id: " + id));
         return customerMapper.toResponse(customer);
     }
 
