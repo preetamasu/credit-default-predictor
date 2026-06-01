@@ -48,8 +48,11 @@ public class CustomerService {
     }
 
     public CustomerResponseDTO updateCustomer(UUID customerId,CustomerRequestDTO customerRequestDTO){
-        Customer customer  = customerRepository.findById(customerId).orElseThrow(()-> new RuntimeException("No customer found with that Id"+ customerId));
+        Customer customer  = customerRepository.findById(customerId).orElseThrow(()-> new CustomerNotFoundException("No customer found with that Id"+ customerId));
 
+        if(customerRepository.existsByEmailAndIdNot(customerRequestDTO.email(),customerId)){
+            throw new DuplicateEmailException("There already exists an email"+ customerRequestDTO.email());
+        }
         customer.setFirstName(customerRequestDTO.firstName());
         customer.setLastName(customerRequestDTO.lastName());
         customer.setEmail(customerRequestDTO.email());
@@ -61,7 +64,7 @@ public class CustomerService {
 
     public void deleteCustomer(UUID id){
 
-        Customer customer = customerRepository.findById(id).orElseThrow(()-> new RuntimeException("Customer not found with id:"+id));
+        Customer customer = customerRepository.findById(id).orElseThrow(()-> new CustomerNotFoundException("Customer not found with id:"+id));
         customer.setCustomerStatus(CustomerStatus.DELETED);
 
         customerRepository.save(customer);
