@@ -31,7 +31,7 @@ public class CreditApplication {
 
     private EmploymentStatus employmentStatus;
 
-    private Integer employmentLengthMonth;
+    private Integer employmentLengthMonths;
 
     private Integer creditScore;
 
