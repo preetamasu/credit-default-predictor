@@ -4,6 +4,7 @@ package com.example.credit.exception;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.coyote.Response;
+import org.springframework.cglib.core.Local;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -59,5 +60,16 @@ public class GlobalExceptionHandler {
                 null
 
         ),HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(CreditApplicationNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleCreditApplicationNotFound(CreditApplicationNotFoundException exception,HttpServletRequest request){
+        return new ResponseEntity<>(new ErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                HttpStatus.BAD_REQUEST.getReasonPhrase(),
+                exception.getMessage(),
+                request.getRequestURI(),
+                null),HttpStatus.NOT_FOUND);
     }
 }
