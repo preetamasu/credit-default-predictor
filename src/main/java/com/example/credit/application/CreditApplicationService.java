@@ -39,6 +39,7 @@ public class CreditApplicationService {
         creditApplication.setCustomer(customer);
         creditApplication.setCreditApplicationStatus(CreditApplicationStatus.SUBMITTED);
 
+        creditApplicationRepository.save(creditApplication);
         return creditApplicationMapper.toResponse(creditApplication);
     }
 
@@ -47,7 +48,7 @@ public class CreditApplicationService {
         customerRepository.findById(customerId).orElseThrow(()-> new CustomerNotFoundException("Customer not found with id: "+ customerId));
          return creditApplicationRepository.findByCustomerId(customerId).stream().map(creditApplicationMapper::toResponse).toList();
     }
-    public List<CreditApplication> getAllApplications(){
-        return creditApplicationRepository.findAll();
+    public List<CreditApplicationResponseDTO> getAllApplications(){
+        return creditApplicationRepository.findAll().stream().map(creditApplicationMapper::toResponse).toList();
     }
 }
