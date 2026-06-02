@@ -28,7 +28,7 @@ public class Customer {
     private String lastName;
     private String email;
     private String phoneNumber;
-    private LocalDate DOB;
+    private String DOB;
     private CustomerStatus customerStatus;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

@@ -4,6 +4,7 @@ import com.example.credit.exception.CustomerNotFoundException;
 import com.example.credit.exception.DuplicateEmailException;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,7 +34,9 @@ public class CustomerService {
         customer.setCustomerStatus(CustomerStatus.ACTIVE);
         customer.setEmail(requestDTO.email());
         customer.setPhoneNumber(requestDTO.phoneNumber());
-        customer.setDOB(LocalDate.parse(requestDTO.DOB()));
+        customer.setDOB(requestDTO.DOB());
+        customer.setCreatedAt(LocalDateTime.now());
+        customer.setUpdatedAt(LocalDateTime.now());
 
         return customerMapper.toResponse(customerRepository.save(customer));
     }
@@ -56,8 +59,9 @@ public class CustomerService {
         customer.setFirstName(customerRequestDTO.firstName());
         customer.setLastName(customerRequestDTO.lastName());
         customer.setEmail(customerRequestDTO.email());
-        customer.setDOB(LocalDate.parse(customerRequestDTO.DOB()));
+        customer.setDOB(customerRequestDTO.DOB());
         customer.setPhoneNumber(customerRequestDTO.phoneNumber());
+        customer.setUpdatedAt(LocalDateTime.now());
 
         return customerMapper.toResponse(customerRepository.save(customer));
     }

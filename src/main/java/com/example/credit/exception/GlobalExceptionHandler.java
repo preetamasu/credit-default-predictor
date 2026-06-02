@@ -72,4 +72,17 @@ public class GlobalExceptionHandler {
                 request.getRequestURI(),
                 null),HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(DuplicateEmailException.class)
+    public ResponseEntity<ErrorResponse> handleDuplicateEmailException(DuplicateEmailException exception,HttpServletRequest request){
+        return new ResponseEntity<>(
+                new ErrorResponse(
+                        LocalDateTime.now(),
+                        HttpStatus.CONFLICT.value(),
+                        HttpStatus.CONFLICT.getReasonPhrase(),
+                        exception.getMessage(),
+                        request.getRequestURI(),
+                        null),HttpStatus.CONFLICT);
+
+    }
 }

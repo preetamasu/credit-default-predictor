@@ -15,7 +15,11 @@ public record CustomerRequestDTO(
         )
         String phoneNumber,
 
-        @Past(message = "Date of birth must be in the past")
+        @NotBlank(message = "Date of birth is required")
+        @Pattern(
+                regexp = "^\\d{4}-\\d{2}-\\d{2}$",
+                message = "Date of birth must be in yyyy-MM-dd format"
+        )
         String DOB
 ) {
 }
