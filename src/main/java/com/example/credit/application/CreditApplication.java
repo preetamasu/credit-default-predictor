@@ -1,6 +1,7 @@
 package com.example.credit.application;
 
 import com.example.credit.customer.Customer;
+import com.example.credit.prediction.Prediction;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -27,6 +29,11 @@ public class CreditApplication {
             name = "customer_id"
     )
     private Customer customer;
+
+    @OneToMany(
+            mappedBy = "creditApplication"
+    )
+    private List<Prediction> prediction;
 
     private BigDecimal annualIncome;
 
