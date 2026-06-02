@@ -7,6 +7,7 @@ import com.example.credit.exception.CreditApplicationNotFoundException;
 import com.example.credit.exception.CustomerNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -36,8 +37,17 @@ public class CreditApplicationService {
         CreditApplication creditApplication = creditApplicationMapper.toEntity(creditApplicationRequestDTO);
 
         creditApplication.setCustomer(customer);
+        creditApplication.setCreditApplicationStatus(CreditApplicationStatus.SUBMITTED);
 
-         return creditApplicationMapper.toResponse(creditApplication);
+        return creditApplicationMapper.toResponse(creditApplication);
+    }
 
+    public List<CreditApplicationResponseDTO> getApplicationsByCustomerId(UUID customerId){
+
+        customerRepository.findById(customerId).orElseThrow(()-> new CustomerNotFoundException("Customer not found with id: "+ customerId));
+         return creditApplicationRepository.findByCustomerId(customerId).stream().map(creditApplicationMapper::toResponse).toList();
+    }
+    public List<CreditApplication> getAllApplications(){
+        return creditApplicationRepository.findAll();
     }
 }
