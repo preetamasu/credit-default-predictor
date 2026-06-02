@@ -24,9 +24,7 @@ public class Prediction {
 
     @ManyToOne
     @JoinColumn
-            (
-                    name = "application_id"
-            )
+            (name = "application_id"      )
     private CreditApplication creditApplication;
 
     private BigDecimal defaultProbability;

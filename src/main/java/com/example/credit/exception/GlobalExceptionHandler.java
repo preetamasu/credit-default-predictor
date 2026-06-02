@@ -82,4 +82,17 @@ public class GlobalExceptionHandler {
                         null),HttpStatus.CONFLICT);
 
     }
+    @ExceptionHandler(PredictionNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handlePredictionNotFoundException(PredictionNotFoundException exception,HttpServletRequest request){
+        return new ResponseEntity<>(
+                new ErrorResponse(LocalDateTime.now(),
+                        HttpStatus.NOT_FOUND.value(),
+                        HttpStatus.NOT_FOUND.getReasonPhrase(),
+                        exception.getMessage(),
+                        request.getRequestURI(),
+                        null),HttpStatus.NOT_FOUND
+
+
+        );
+    }
 }
