@@ -7,6 +7,7 @@ import com.example.credit.exception.CreditApplicationNotFoundException;
 import com.example.credit.exception.CustomerNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -38,6 +39,8 @@ public class CreditApplicationService {
 
         creditApplication.setCustomer(customer);
         creditApplication.setCreditApplicationStatus(CreditApplicationStatus.SUBMITTED);
+        creditApplication.setCreatedAt(LocalDateTime.now());
+        creditApplication.setUpdatedAt(LocalDateTime.now());
 
         creditApplicationRepository.save(creditApplication);
         return creditApplicationMapper.toResponse(creditApplication);
