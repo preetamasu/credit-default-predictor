@@ -50,5 +50,6 @@ public class PredictionService {
     public List<PredictionResponseDTO> getAllPredictions(){
         return predictionRepository.findAll().stream().map(predictionMapper::toResponse).toList();
     }
-// Have to implement the main runPrediction method for the ml part
+
+
 }
