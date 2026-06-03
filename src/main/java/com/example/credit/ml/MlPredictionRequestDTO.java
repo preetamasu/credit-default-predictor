@@ -1,4 +1,4 @@
-package com.example.credit.prediction;
+package com.example.credit.ml;
 
 import java.math.BigDecimal;
 

@@ -1,4 +1,4 @@
-package com.example.credit.prediction;
+package com.example.credit.ml;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;

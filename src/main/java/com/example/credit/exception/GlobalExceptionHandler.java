@@ -95,4 +95,18 @@ public class GlobalExceptionHandler {
 
         );
     }
+
+    @ExceptionHandler(MlServiceException.class)
+    public ResponseEntity<ErrorResponse> handleMlServiceFailure(MlServiceException exception,HttpServletRequest request){
+        return new ResponseEntity<>(
+                new ErrorResponse(
+                        LocalDateTime.now(),
+                        HttpStatus.SERVICE_UNAVAILABLE.value(),
+                        HttpStatus.SERVICE_UNAVAILABLE.getReasonPhrase(),
+                        exception.getMessage(),
+                        request.getRequestURI(),
+                        null
+                 ),HttpStatus.SERVICE_UNAVAILABLE
+        );
+    }
 }
