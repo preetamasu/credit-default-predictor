@@ -10,6 +10,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/predictions")
+@CrossOrigin
 public class PredictionController {
 
     private final PredictionService predictionService;

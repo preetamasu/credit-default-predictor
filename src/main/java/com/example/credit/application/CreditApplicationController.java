@@ -11,6 +11,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/applications")
+@CrossOrigin
 public class CreditApplicationController {
 
     private final CreditApplicationService creditApplicationService;
@@ -18,6 +19,8 @@ public class CreditApplicationController {
     public CreditApplicationController(CreditApplicationService creditApplicationService){
         this.creditApplicationService = creditApplicationService;
     }
+
+
 
     @PostMapping
     public ResponseEntity<CreditApplicationResponseDTO> createApplication(

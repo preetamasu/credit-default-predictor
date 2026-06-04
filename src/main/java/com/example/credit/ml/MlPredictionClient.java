@@ -2,9 +2,11 @@ package com.example.credit.ml;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.client.RestClient;
 
 @Component
+@CrossOrigin
 public class MlPredictionClient {
     private final RestClient restClient;
 
