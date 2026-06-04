@@ -1,5 +1,6 @@
 package com.example.credit.ml;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
@@ -7,8 +8,9 @@ import org.springframework.web.client.RestClient;
 public class MlPredictionClient {
     private final RestClient restClient;
 
-    public MlPredictionClient(RestClient.Builder restClientBuilder){
-        this.restClient = restClientBuilder.baseUrl("http://127.0.0.1:8000").build();
+    public MlPredictionClient(RestClient.Builder restClientBuilder,  @Value("${URL}")
+    String url){
+        this.restClient = restClientBuilder.baseUrl(url).build();
     }
 
     public MlPredictionResponseDTO predict(MlPredictionRequestDTO mlPredictionRequestDTO){

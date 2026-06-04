@@ -1,11 +1,9 @@
 package com.example.credit.prediction;
 
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -33,6 +31,14 @@ public class PredictionController {
     @GetMapping
     public ResponseEntity<List<PredictionResponseDTO>> getAllPredictions(){
         return new ResponseEntity<>(predictionService.getAllPredictions(),HttpStatus.OK);
+    }
+
+    @PostMapping
+            (
+                   "/applications/{applicationId}"
+            )
+    public ResponseEntity<PredictionResponseDTO> getPrediction(@PathVariable UUID applicationId){
+        return new ResponseEntity<>(predictionService.runPredictionForApplication(applicationId),HttpStatus.CREATED);
     }
 
 }

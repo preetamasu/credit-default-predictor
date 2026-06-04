@@ -34,3 +34,4 @@ build/
 src/main/resources/application.properties
 docker-compose.yml
 ml-service/credit_risk_dataset.csv
+.env
