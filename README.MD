@@ -6,9 +6,7 @@ The system uses a Spring Boot backend, PostgreSQL database, FastAPI ML service, 
 
 ## Live Demo
 
-Frontend: `PASTE_VERCEL_URL_HERE`  
-Backend: `PASTE_RAILWAY_URL_HERE`  
-ML Service: `PASTE_RENDER_URL_HERE`
+Frontend: https://credit-default-predictor-dusky.vercel.app/
 
 ## Tech Stack
 
