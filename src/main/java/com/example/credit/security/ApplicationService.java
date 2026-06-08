@@ -4,6 +4,7 @@ package com.example.credit.security;
 import com.example.credit.dto.LoginDTO;
 import com.example.credit.dto.RegisterDTO;
 import com.example.credit.dto.ResponseDTO;
+import com.example.credit.dto.UserResponseDTO;
 import com.example.credit.user.Role;
 import com.example.credit.user.User;
 import com.example.credit.user.UserRepository;
@@ -28,7 +29,7 @@ public class ApplicationService {
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
 
-    public User register(RegisterDTO registerDTO){
+    public UserResponseDTO register(RegisterDTO registerDTO){
         User user = new User();
         user.setFirstName(registerDTO.firstName());
         user.setLastName(registerDTO.lastName());
@@ -36,7 +37,11 @@ public class ApplicationService {
         user.setPassword(passwordEncoder.encode(registerDTO.password()));
         user.setRole(Role.USER);
         user.setEnabled(true);
-        return userRepository.save(user);
+        User savedUser = userRepository.save(user);
+        return new UserResponseDTO(savedUser.getFirstName(),
+                savedUser.getLastName(),
+                savedUser.getEmail(),
+                savedUser.getRole().toString());
     }
 
     public ResponseDTO login(LoginDTO loginDTO){
