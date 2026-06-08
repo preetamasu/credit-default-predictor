@@ -1,4 +1,4 @@
 package com.example.credit.security;
 
-public class Security {
+public class JwtService {
 }
