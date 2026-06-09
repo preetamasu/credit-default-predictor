@@ -1,6 +1,5 @@
 package com.example.credit.security;
 
-import com.example.credit.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,6 +9,11 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
 
 @Configuration
 @RequiredArgsConstructor
@@ -21,7 +25,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
 
-        return http.csrf(AbstractHttpConfigurer::disable).authorizeHttpRequests(
+        return http.csrf(AbstractHttpConfigurer::disable).cors(cors-> cors.configurationSource(corsConfigurationSource()))
+                .authorizeHttpRequests(
                 auth-> auth.requestMatchers("/api/v1/auth/**").permitAll()
                         .anyRequest().authenticated()
         )
@@ -30,5 +35,35 @@ public class SecurityConfig {
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
 
+
+    }
+
+    private CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+        corsConfiguration.setAllowedOrigins(
+                List.of(
+                        "http://localhost:5173",
+                        "https://credit-default-predictor-production.up.railway.app"
+
+                )
+        );
+
+        corsConfiguration.setAllowedMethods(List.of(
+                "GET",
+                "POST",
+                "PUT",
+                "DELETE",
+                "OPTIONS"
+        ));
+
+        corsConfiguration.setAllowedHeaders(List.of(
+                "Authorization",
+                "Content-Type"
+        ));
+        corsConfiguration.setAllowCredentials(true);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", corsConfiguration);
+
+        return source;
     }
 }
