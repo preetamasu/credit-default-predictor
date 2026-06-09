@@ -1,7 +1,10 @@
 import { Link, NavLink } from 'react-router-dom'
-import { FileText, Home, Search, Sparkles, Users, Zap } from 'lucide-react'
+import { FileText, Home, LogIn, LogOut, Search, Sparkles, UserPlus, Users, Zap } from 'lucide-react'
+import { useAuth } from '../contexts/AuthProvider'
 
 export default function Layout({ children }) {
+  const { isAuthenticated, logoutUser } = useAuth()
+
   return (
     <div className="min-h-screen bg-slate-100 text-slate-900 dark:bg-slate-950 dark:text-slate-100 lg:flex">
       <aside className="border-b border-slate-200 bg-white/90 px-4 py-4 shadow-sm backdrop-blur dark:border-slate-800 dark:bg-slate-900/90 lg:sticky lg:top-0 lg:h-screen lg:w-72 lg:border-b-0 lg:border-r lg:px-5 lg:py-6">
@@ -24,12 +27,16 @@ export default function Layout({ children }) {
           <SidebarLink to="/predict" icon={<Zap size={16} />} label="Predict" />
         </nav>
 
-        <div className="mt-5 hidden rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-800 dark:border-emerald-900/60 dark:bg-emerald-950/40 dark:text-emerald-200 lg:block">
+        <div className={`mt-5 hidden rounded-lg border p-3 text-sm lg:block ${
+          isAuthenticated
+            ? 'border-emerald-200 bg-emerald-50 text-emerald-800 dark:border-emerald-900/60 dark:bg-emerald-950/40 dark:text-emerald-200'
+            : 'border-amber-200 bg-amber-50 text-amber-800 dark:border-amber-900/60 dark:bg-amber-950/40 dark:text-amber-200'
+        }`}>
           <div className="flex items-center gap-2 font-medium">
-            <span className="h-2 w-2 rounded-full bg-emerald-500"></span>
-            Connected
+            <span className={`h-2 w-2 rounded-full ${isAuthenticated ? 'bg-emerald-500' : 'bg-amber-500'}`}></span>
+            {isAuthenticated ? 'Signed in' : 'Guest mode'}
           </div>
-          <div className="mt-1 text-xs text-emerald-700/80 dark:text-emerald-300/80">dev environment</div>
+          <div className="mt-1 text-xs opacity-80">{isAuthenticated ? 'Protected actions enabled' : 'Login to create records'}</div>
         </div>
       </aside>
 
@@ -56,7 +63,26 @@ export default function Layout({ children }) {
                 <FileText size={16} />
                 New Application
               </Link>
-              <div className="hidden h-10 w-10 rounded-lg border border-slate-200 bg-slate-100 dark:border-slate-700 dark:bg-slate-800 sm:block"></div>
+              {isAuthenticated ? (
+                <button
+                  onClick={logoutUser}
+                  className="inline-flex h-10 items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
+                >
+                  <LogOut size={16} />
+                  Logout
+                </button>
+              ) : (
+                <div className="grid grid-cols-2 gap-2 sm:flex">
+                  <Link to="/login" className="inline-flex h-10 items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800">
+                    <LogIn size={16} />
+                    Login
+                  </Link>
+                  <Link to="/register" className="inline-flex h-10 items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800">
+                    <UserPlus size={16} />
+                    Register
+                  </Link>
+                </div>
+              )}
             </div>
           </div>
         </div>
