@@ -42,7 +42,6 @@ public class SecurityConfig {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowedOrigins(
                 List.of(
-                        "http://localhost:5173",
                         "https://credit-default-predictor-production.up.railway.app"
 
                 )
