@@ -25,7 +25,14 @@ export function AuthProvider({ children }) {
   }
 
   const registerUser = async (payload) => {
-    const response = await apiRegister(payload)
+    const registerDto = {
+      email: payload.email?.trim(),
+      password: payload.password,
+      firstName: payload.firstName?.trim(),
+      lastName: payload.lastName?.trim(),
+    }
+
+    const response = await apiRegister(registerDto)
     return response.data ?? response
   }
 
