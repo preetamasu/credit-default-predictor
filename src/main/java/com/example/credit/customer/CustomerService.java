@@ -2,6 +2,10 @@ package com.example.credit.customer;
 
 import com.example.credit.exception.CustomerNotFoundException;
 import com.example.credit.exception.DuplicateEmailException;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -20,7 +24,7 @@ public class CustomerService {
         this.customerMapper = customerMapper;
     }
 
-
+    @CacheEvict(value = "CUSTOMERS_CACHE", key = "#result.id()")
     public CustomerResponseDTO createCustomer(CustomerRequestDTO requestDTO){
 
         if(customerRepository.existsByEmail(requestDTO.email())){
@@ -41,15 +45,23 @@ public class CustomerService {
         return customerMapper.toResponse(customerRepository.save(customer));
     }
 
+    @Cacheable(value="CUSTOMER_CACHE",key = "#id")
     public CustomerResponseDTO getCustomerById(UUID id){
         Customer customer = customerRepository.findById(id).orElseThrow( ()-> new CustomerNotFoundException("Customer not found with id: " + id));
         return customerMapper.toResponse(customer);
     }
 
+    @Cacheable(value = "CUSTOMERS_CACHE", key="'all'")
     public List<CustomerResponseDTO> getAllCustomers(){
             return customerRepository.findAll().stream().map(customerMapper::toResponse).toList();
     }
 
+    @Caching(
+            evict = {
+                    @CacheEvict(value = "CUSTOMER_CACHE",key = "#customerId"),
+                    @CacheEvict(value = "CUSTOMERS_CACHE",key="'all'")
+            }
+    )
     public CustomerResponseDTO updateCustomer(UUID customerId,CustomerRequestDTO customerRequestDTO){
         Customer customer  = customerRepository.findById(customerId).orElseThrow(()-> new CustomerNotFoundException("No customer found with that Id"+ customerId));
 
@@ -66,6 +78,12 @@ public class CustomerService {
         return customerMapper.toResponse(customerRepository.save(customer));
     }
 
+    @Caching(
+            evict = {
+                    @CacheEvict(value = "CUSTOMER_CACHE",key = "#id"),
+                    @CacheEvict(value = "CUSTOMERS_CACHE",key="'all'")
+            }
+    )
     public void deleteCustomer(UUID id){
 
         Customer customer = customerRepository.findById(id).orElseThrow(()-> new CustomerNotFoundException("Customer not found with id:"+id));
