@@ -14,10 +14,10 @@ public class CustomerMapper {
                 customer.getLastName(),
                 customer.getEmail(),
                 customer.getPhoneNumber(),
-                LocalDate.parse(customer.getDOB()),
+                customer.getDOB(),
                 customer.getCustomerStatus(),
-                customer.getCreatedAt(),
-                customer.getUpdatedAt()
+                customer.getCreatedAt().toString(),
+                customer.getUpdatedAt().toString()
         );
     }
 }

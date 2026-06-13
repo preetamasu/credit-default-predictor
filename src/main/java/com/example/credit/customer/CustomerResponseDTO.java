@@ -10,9 +10,9 @@ public record CustomerResponseDTO(
         String lastName,
         String email,
         String phoneNumber,
-        LocalDate dateOfBirth,
+        String dateOfBirth,
         CustomerStatus customerStatus,
-        LocalDateTime createdAt,
-        LocalDateTime updatedAt
+        String createdAt,
+        String updatedAt
 ) {
 }

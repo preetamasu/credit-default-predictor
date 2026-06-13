@@ -2,7 +2,7 @@ package com.example.credit.customer;
 
 import jakarta.validation.constraints.*;
 
-public record CustomerRequestDTO(
+public record   CustomerRequestDTO(
         @NotBlank
         String firstName,
         @NotNull

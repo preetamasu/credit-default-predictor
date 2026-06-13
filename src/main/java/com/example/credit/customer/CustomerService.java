@@ -24,7 +24,7 @@ public class CustomerService {
         this.customerMapper = customerMapper;
     }
 
-    @CacheEvict(value = "CUSTOMERS_CACHE", key = "#result.id()")
+    @CacheEvict(value = "CUSTOMERS_CACHE", key = "'all'")
     public CustomerResponseDTO createCustomer(CustomerRequestDTO requestDTO){
 
         if(customerRepository.existsByEmail(requestDTO.email())){
@@ -51,7 +51,7 @@ public class CustomerService {
         return customerMapper.toResponse(customer);
     }
 
-    @Cacheable(value = "CUSTOMERS_CACHE", key="'all'")
+    //@Cacheable(value = "CUSTOMERS_CACHE", key="'all'")
     public List<CustomerResponseDTO> getAllCustomers(){
             return customerRepository.findAll().stream().map(customerMapper::toResponse).toList();
     }
