@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class CustomerService {
@@ -51,9 +52,9 @@ public class CustomerService {
         return customerMapper.toResponse(customer);
     }
 
-    //@Cacheable(value = "CUSTOMERS_CACHE", key="'all'")
+    @Cacheable(value = "CUSTOMERS_CACHE", key="'all'")
     public List<CustomerResponseDTO> getAllCustomers(){
-            return customerRepository.findAll().stream().map(customerMapper::toResponse).toList();
+            return customerRepository.findAll().stream().map(customerMapper::toResponse).collect(Collectors.toList());
     }
 
     @Caching(
