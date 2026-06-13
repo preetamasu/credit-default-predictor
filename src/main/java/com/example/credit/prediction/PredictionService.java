@@ -10,6 +10,7 @@ import com.example.credit.exception.PredictionNotFoundException;
 import com.example.credit.ml.MlPredictionClient;
 import com.example.credit.ml.MlPredictionRequestDTO;
 import com.example.credit.ml.MlPredictionResponseDTO;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.swing.undo.CannotRedoException;
@@ -38,17 +39,20 @@ public class PredictionService {
         this.mlPredictionClient = mlPredictionClient;
     }
 
+    @Cacheable(value = "APPLICATIONBYPREDID_CACHE",key="#id")
     public CreditApplicationResponseDTO getCreditApplicationByPredictionId(UUID id){
         Prediction prediction = predictionRepository.findById(id).orElseThrow(()-> new PredictionNotFoundException(id));
 
         return creditApplicationMapper.toResponse(prediction.getCreditApplication());
     }
 
+    @Cacheable(value="PREDICTIONBYID_CACHE",key="#id")
     public PredictionResponseDTO getPredictionById(UUID id){
         Prediction prediction = predictionRepository.findById(id).orElseThrow(()-> new PredictionNotFoundException(id));
         return predictionMapper.toResponse(prediction);
     }
 
+    @Cacheable(value="PREDICTIONSBYAPPLID",key="#id")
     public List<PredictionResponseDTO> getPredictionsByApplicationId(UUID id){
 
         creditApplicationRepository.findById(id).orElseThrow(()-> new CreditApplicationNotFoundException(id));
@@ -56,6 +60,7 @@ public class PredictionService {
         return predictionRepository.findByCreditApplicationId(id).stream().map(predictionMapper::toResponse).toList();
     }
 
+    @Cacheable(value="PREDICTIONS",key="'all'")
     public List<PredictionResponseDTO> getAllPredictions(){
         return predictionRepository.findAll().stream().map(predictionMapper::toResponse).toList();
     }
