@@ -5,6 +5,8 @@ import com.example.credit.customer.CustomerMapper;
 import com.example.credit.customer.CustomerRepository;
 import com.example.credit.exception.CreditApplicationNotFoundException;
 import com.example.credit.exception.CustomerNotFoundException;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -26,12 +28,14 @@ public class CreditApplicationService {
         this.creditApplicationMapper = creditApplicationMapper;
     }
 
+    @Cacheable(value = "APPLICATION_CACHE",key = "#id")
     public CreditApplicationResponseDTO getApplicationById(UUID id){
         CreditApplication creditApplication = creditApplicationRepository.findById(id).orElseThrow(()-> new CreditApplicationNotFoundException(id));
 
         return creditApplicationMapper.toResponse(creditApplication);
     }
 
+    @CacheEvict(value= "APPLICATIONS_CACHE",key = "#result.id()")
     public CreditApplicationResponseDTO createApplication(CreditApplicationRequestDTO creditApplicationRequestDTO){
         Customer customer = customerRepository.findById(creditApplicationRequestDTO.customerId()).orElseThrow(()-> new CustomerNotFoundException("Couldn't find an customer with that id"+ creditApplicationRequestDTO.customerId()));
 
@@ -46,6 +50,7 @@ public class CreditApplicationService {
         return creditApplicationMapper.toResponse(creditApplication);
     }
 
+    @Cacheable(value = "APPLICATIONS_CACHE",key = "#customerId")
     public List<CreditApplicationResponseDTO> getApplicationsByCustomerId(UUID customerId){
 
         customerRepository.findById(customerId).orElseThrow(()-> new CustomerNotFoundException("Customer not found with id: "+ customerId));
